@@ -3,9 +3,6 @@
   <img src="./figs/logo_competition.png" alt="image" style="width:1000px;">
 </p>
 
-
-The first challenge on short-form video quality assessment 
-
 # KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/pdf/2402.07220.pdf)
@@ -15,7 +12,9 @@ The first challenge on short-form video quality assessment
 - [ ] 2024-03-22: **The KSVQE from our work will be released after the test phase of competition**
 
 ## Dataset for KVQ
-
+<p align="center">
+  <img src="https://github.com/lixinustc/lixinustc.github.io/blob/main/projects/KVQ/imgs/intro3.png" alt="image" style="width:1000px;">
+</p>
 
 
 ## Challenge Description
@@ -64,6 +63,19 @@ bash scripts/test.sh
 
 ## Cite US
 Please cite us if this work is helpful to you.
+```
+@inproceedings{lu2024kvq,
+  title={KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos},
+  author={Lu, Yiting and Li, Xin and Pei, Yajing and Yuan, Kun and Xie, Qizhi and Qu, Yunpeng and Sun, Ming and Zhou, Chao and Chen, Zhibo},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  year={2024}
+}
+```
+
+## Acknowledgments
+The basic code is partially from the below repos.
+- [SimpleVQA](https://github.com/sunwei925/SimpleVQA)
+- [Dover](https://github.com/VQAssessment/DOVER)
 
 
 
