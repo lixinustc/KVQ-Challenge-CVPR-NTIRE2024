@@ -61,7 +61,8 @@ class Trainer:
         self.model = torch.nn.DataParallel(self.model, device_ids=self.gpu_list)
         if self.config["load_path"] is not None:
             state_dict = torch.load(self.config["load_path"], map_location=self.device)
-       
+            if 'state_dict' in state_dict:
+                state_dict=state_dict['state_dict']
             new_state_dict = OrderedDict()
             for k, v in state_dict.items():
                 name = 'module.'+ k # add `module.`
