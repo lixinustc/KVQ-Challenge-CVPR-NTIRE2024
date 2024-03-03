@@ -1,4 +1,4 @@
-
+<img width="1270" alt="image" src="https://github.com/lixinustc/KVQ-Challenge-CVPR-NTIRE2024/assets/69355369/3e169ec1-7c8d-4f25-aef1-df5da2ddde65">
 <p align="center">
   <img src="./figs/logo_competition.png" alt="image" style="width:1000px;">
 </p>
@@ -39,12 +39,14 @@ Our codes are compatible with pytorch1.9.0, you may try newer version.
 
 ### Prepare training dataset
 Download KVQ dataset from codalab competition [this link] (https://codalab.lisn.upsaclay.fr/)
-
+Please add the path of KVQ and annotation to the items of "data_prefix" and "anno_file" in the config file (i.e. /config/kwai_simpleVQA.yml)
 
 ### prepare Slowfast feature 
 ```bash
-python SlowFast_features.py --gpu_ids 0,1 --video_root yout_path  --video_csv yout_path 
+python SlowFast_features.py --gpu_ids 0,1 --video_root yout_path  --video_csv yout_path
 ```
+Please add the path of Slowfast feature to the items of "data_prefix_3D"  in the config file (i.e. /config/kwai_simpleVQA.yml)
+
 ### Train 
 ```bash
 nohup python -u train.py  --o config/kwai_simpleVQA.yml --gpu_id 0,1 > log/kwai_simpleVQA.log 2>&1 &
