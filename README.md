@@ -12,13 +12,13 @@
 - [x] 2024-03-03: **Upload an example for KVQ competition based on <a href="https://github.com/sunwei925/SimpleVQA">SimpleVQA</a> in this GitHub.**
 - [ ] 2024-03-22: **The KSVQE from our work will be released after the test phase of competition**
 
-## Dataset for KVQ
+## 📌 Dataset for KVQ 
 <p align="center">
   <img src="https://github.com/lixinustc/lixinustc.github.io/blob/main/projects/KVQ/imgs/intro3.png" alt="image" style="width:1000px;">
 </p>
 
 
-## Challenge Description
+##  :tada: Challenge Description
 
 Short-form UGC videos, like Kwai and TikTok, have become a popular and irreplaceable mainstream media form, thriving on user-friendly engagement, and kaleidoscope creation, etc. However, the advancing content generation modes, e.g., special effects, and sophisticated processing workflows, e.g., de-artifacts, have introduced significant challenges to recent UGC video quality assessment (VQA).
 
@@ -26,7 +26,7 @@ To promote the development of short-form UGC VQA, we have the first NTIRE challe
 
 The goal of this competition is to establish a new and applicable benchmark for short-form User Generated Content (UGC) quality assessment. We are looking forward to the collaborative efforts of our participants, aiming to elevate the quality of short-form video content. This competition will introduce an innovative evaluation methodology that incorporates a coarse-grained quality score measurement, along with fine-grained rankings for more challenging samples.
 
-## Getting Start
+## :sparkles: Getting Start
 
 ### Prepare environment
 ```bash
