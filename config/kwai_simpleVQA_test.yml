@@ -1,0 +1,51 @@
+name: simpleVQA
+num_epochs: 50
+l_num_epochs: 0
+warmup_epochs: 2.5
+ema: true
+save_model: true
+batch_size: 4
+num_workers: 6
+
+
+data:  
+    
+    
+    val:
+        type: ViewDecompositionDataset_add_forSimpleVQA
+        args:
+            phase: test
+            anno_file:  dataset_csv/Kwai/xxx.txt
+            data_prefix: /data/kwai/
+            data_prefix_3D: /data/feat/
+            feature_type: SlowFast
+            sample_types: 
+                simpleVQA:
+                    resize: 520
+                    crop: 448
+                    clip_len: 8
+                    frame_interval: 10
+                    t_frag: 8
+                    num_clips: 1
+            
+
+model:
+    type: simpleVQA
+    args:
+        simpleVQA:
+            backbone:
+            head:
+                in_channels: 9472
+                hidden_channels: 128
+            
+optimizer:
+    lr: !!float 3e-5
+    backbone_lr_mult: !!float 1
+    wd: 0.05
+        
+#test_load_path: ./pretrained_weights/DOVER.pth
+load_path: checkpoint/SimpleVQA_head_val-ltest_n_finetuned.pth
+test_load_path:  checkpoint/SimpleVQA_head_val-ltest_n_finetuned.pth
+
+    
+        
