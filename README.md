@@ -4,7 +4,6 @@
 </p>
 
 
-# KVQ-Challenge-CVPR-NTIRE2024
 The first challenge on short-form video quality assessment 
 
 # KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos
