@@ -17,8 +17,8 @@ The goal of this competition is to establish a new and applicable benchmark for 
 
 ### Prepare environment
 ```bash
-conda create -n DIL python=3.8
-conda activate DIL
+conda create -n KVQ python=3.8
+conda activate KVQ
 pip install -r requirements.txt
 ```
 
