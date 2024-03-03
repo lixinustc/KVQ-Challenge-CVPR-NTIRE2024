@@ -27,13 +27,12 @@ Our codes are compatible with pytorch1.9.0, you may try newer version.
 ### Prepare training dataset
 Download KVQ dataset from codalab competition [this link] (https://codalab.lisn.upsaclay.fr/)
 
-### 
 
-#### prepare Slowfast feature 
+### prepare Slowfast feature 
 ```bash
 python SlowFast_features.py --gpu_ids 0,1 --video_root yout_path  --video_csv yout_path 
 ```
-#### Train 
+### Train 
 ```bash
 nohup python -u train.py  --o config/kwai_simpleVQA.yml --gpu_id 0,1 > log/kwai_simpleVQA.log 2>&1 &
 ```
