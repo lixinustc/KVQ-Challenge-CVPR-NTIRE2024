@@ -7,6 +7,7 @@ The first challenge on short-form video quality assessment
 
 ## :bookmark: News!!!
 - [x] 2024-03-03: **Upload an example for KVQ competition based on <a href="https://github.com/sunwei925/SimpleVQA">SimpleVQA</a> in this GitHub.**
+- [ ] 2024-03-22: **The KSVQE from our work will be released after the test phase of competition**
 
 ## Challenge Description
 
