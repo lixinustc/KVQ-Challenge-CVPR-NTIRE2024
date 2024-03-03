@@ -1,3 +1,9 @@
+
+<p align="center">
+  <img src="./figs/logo_competition.png" alt="image" style="width:1000px;">
+</p>
+
+
 # KVQ-Challenge-CVPR-NTIRE2024
 The first challenge on short-form video quality assessment 
 
