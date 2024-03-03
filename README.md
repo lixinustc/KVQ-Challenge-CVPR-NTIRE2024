@@ -6,7 +6,7 @@
 # KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/pdf/2402.07220.pdf)  [![Project](https://img.shields.io/badge/Project-Page-blue.svg)](https://lixinustc.github.io/projects/KVQ/) [![Data](https://img.shields.io/badge/Dataset-Link-magenta.svg)](https://drive.google.com/drive/folders/1dkC4NsxMrd6Rxm1IogKe71U8bYy76ojV?usp=sharing)
-[![Challenge](https://img.shields.io/badge/Competition-Codalab-purple.svg)](https://codalab.lisn.upsaclay.fr/competitions/17638)
+[![Challenge](https://img.shields.io/badge/Competition-Codalab-purple.svg)](https://codalab.lisn.upsaclay.fr/competitions/17638) ![visitors](https://visitor-badge.laobi.icu/badge?page_id=lixinustc/KVQ-Challenge-CVPR-NTIRE2024)
 ## :bookmark: News!!!
 - [x] 2024-03-03: **Upload an example for KVQ competition based on <a href="https://github.com/sunwei925/SimpleVQA">SimpleVQA</a> in this GitHub.**
 - [ ] 2024-03-22: **The KSVQE from our work will be released after the test phase of competition**
