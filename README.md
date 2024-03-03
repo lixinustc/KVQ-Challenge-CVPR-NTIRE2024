@@ -1,4 +1,4 @@
-<img width="1270" alt="image" src="https://github.com/lixinustc/KVQ-Challenge-CVPR-NTIRE2024/assets/69355369/3e169ec1-7c8d-4f25-aef1-df5da2ddde65">
+
 <p align="center">
   <img src="./figs/logo_competition.png" alt="image" style="width:1000px;">
 </p>
