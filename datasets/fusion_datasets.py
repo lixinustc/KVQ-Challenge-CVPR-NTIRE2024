@@ -362,7 +362,7 @@ def get_single_view(
 
 
 def spatial_temporal_view_decomposition(
-    video_path, sample_types, samplers, is_train=False, augment=False,
+    video_path, sample_types, samplers, phase='train', is_train=False, augment=False,
 ):
     video = {}
     if video_path.endswith(".yuv"):
@@ -433,6 +433,7 @@ def spatial_temporal_view_decomposition(
     ori_sampled_video={}
     crop_sample_video={}
     for stype, sopt in sample_types.items():
+        sopt['phase']=phase
         sampled_video[stype] = get_single_view(video[stype], stype, **sopt)
         
     return sampled_video,frame_inds
@@ -660,8 +661,8 @@ class ViewDecompositionDataset(torch.utils.data.Dataset):
             filename,
             self.sample_types,
             self.samplers,
-            self.phase == "train",
-            self.augment and (self.phase == "train"),
+            phase = self.phase,
+            is_train=self.phase=='train' ,
         )
     
         for k, v in data.items():
@@ -808,8 +809,9 @@ class ViewDecompositionDataset_add_forSimpleVQA(torch.utils.data.Dataset):
             filename,
             self.sample_types,
             self.samplers,
-            self.phase == "train",
-            self.augment and (self.phase == "train"),
+            phase = self.phase,
+            is_train=self.phase=='train' ,
+            augment = self.augment and (self.phase == "train"),
         )
         data_feat={}
         for k, v in data.items():
