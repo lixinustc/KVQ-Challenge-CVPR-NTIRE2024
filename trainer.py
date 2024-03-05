@@ -62,13 +62,15 @@ class Trainer:
         if self.config["load_path"] is not None:
             state_dict = torch.load(self.config["load_path"], map_location=self.device)
             if 'state_dict' in state_dict:
-                state_dict=state_dict['state_dict']
-            new_state_dict = OrderedDict()
-            for k, v in state_dict.items():
-                name = 'module.'+ k # add `module.`
-                new_state_dict[name] = v
+                state_dict= state_dict['state_dict']
+            else:
+                state_dict= state_dict
+            #new_state_dict = OrderedDict()
+            #for k, v in state_dict.items():
+            # ##   name = 'module.'+ k # add `module.`
+            #    new_state_dict[name] = v
             
-            msg=self.model.load_state_dict(new_state_dict, strict=False)
+            msg=self.model.load_state_dict(state_dict, strict=False)
             print(msg)
 
 
@@ -169,9 +171,10 @@ class Trainer:
 
         best_s, best_p, best_k, best_r = best
         results = []
-
+        
         for i, data in enumerate(tqdm(self.val_loader, desc="Validating")):
             result={}
+            
             for key in self.key_list:
                 if key in data:
                     data[key] = data[key].to(self.device)
@@ -237,6 +240,7 @@ class Trainer:
 
         for i, data in enumerate(tqdm(self.val_loader, desc="Validating")):
             result={}
+            self.model.eval()
             for key in self.key_list:
                 if key in data:
                     data[key] = data[key].to(self.device)
