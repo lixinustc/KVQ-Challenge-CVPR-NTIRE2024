@@ -44,7 +44,7 @@ class VideoDataset_NR_SlowFast_feature(data.Dataset):
             for row in csvreader:
                 video_name=row[0]
             
-                self.video_infos.append(dict(video_name=video_name))
+                self.video_infos.append(video_name)
 
     def __len__(self):
         return len(self.video_infos)
@@ -202,8 +202,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--num_workers', type=int, default=6)
-    parser.add_argument('--resize', type=int, default=112)
+    parser.add_argument('--resize', type=int, default=224)
     parser.add_argument('--gpu_ids', type=list, default=None)
+    parser.add_argument('--database', type=str, default='kvq')
     parser.add_argument('--video_root', type=str, default=None)
     parser.add_argument('--video_csv', type=str, default=None)
     parser.add_argument('--feature_save_folder', type=str, default='./feature/simpleVQA/')
@@ -211,7 +212,7 @@ if __name__ == '__main__':
     config = parser.parse_args()
 
     video_root= config.video_root
-    videos_csv= config.videos_csv
+    videos_csv= config.video_csv
 
     main(config,video_root,videos_csv)
 
