@@ -11,8 +11,8 @@
 ## :bookmark: News!!!
 - [x] 2024-03-03: **Upload an example for KVQ competition based on <a href="https://github.com/sunwei925/SimpleVQA">SimpleVQA</a> in this GitHub.**
 - [x] 2024-03-26: **Upload the validation metric for competition named as "metric_score.py" and release the quality label for validation in [link](https://drive.google.com/drive/folders/1UXwNDJsiYxgrVScQp8sN31ltT7B6LcW-?usp=drive_link).**
-- [x] 2024-03-26: **We open the submission for the testing dataset in [Codalab](https://codalab.lisn.upsaclay.fr/competitions/17638), you can continue to validate your methods by submitting the results. 
-- [ ] 2024-03-30: **The KSVQE of our work will be released after the test phase of competition**
+- [x] 2024-03-26: **We open the submission for the testing dataset in [Codalab](https://codalab.lisn.upsaclay.fr/competitions/17638), you can continue to validate your methods by submitting the results.** 
+- [ ] 2024-03-30: **The KSVQE of our work will be released after the test phase of competition.**
 
 ## 📌 Dataset for KVQ 
 <p align="center">
