@@ -77,6 +77,15 @@ Please cite us if this work is helpful to you.
 }
 ```
 
+```
+@inproceedings{li2024ntire,
+  title={NTIRE 2024 Challenge on Short-form UGC Video Quality Assessment: Methods and Results},
+  author={Li, Xin and Yuan, Kun and Pei, Yajing and Lu, Yiting and Sun, Ming and Zhou, Chao and Chen, Zhibo and Timofte, Radu and others},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops},
+  year={2024}
+}
+```
+
 ## Acknowledgments
 The basic code is partially from the below repos.
 - [SimpleVQA](https://github.com/sunwei925/SimpleVQA)
