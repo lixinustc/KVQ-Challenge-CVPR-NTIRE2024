@@ -70,7 +70,7 @@ bash scripts/test.sh
 Please cite us if this work is helpful to you.
 ```
 @inproceedings{lu2024kvq,
-  title={KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos},
+  title={KVQ: Kwai Video Quality Assessment for Short-form Videos},
   author={Lu, Yiting and Li, Xin and Pei, Yajing and Yuan, Kun and Xie, Qizhi and Qu, Yunpeng and Sun, Ming and Zhou, Chao and Chen, Zhibo},
   booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
   year={2024}
