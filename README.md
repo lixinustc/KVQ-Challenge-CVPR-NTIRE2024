@@ -3,7 +3,7 @@
   <img src="./figs/logo_competition.png" alt="image" style="width:1000px;">
 </p>
 
-# KVQ: Kaleidoscope Video Quality Assessment for Short-form Videos
+# KVQ: Kwai Video Quality Assessment for Short-form Videos
 
 [![arXiv](https://img.shields.io/badge/arXiv-Paper-<COLOR>.svg)](https://arxiv.org/pdf/2402.07220.pdf)  [![Project](https://img.shields.io/badge/Project-Page-blue.svg)](https://lixinustc.github.io/projects/KVQ/) [![Data](https://img.shields.io/badge/Dataset-Link-magenta.svg)](https://drive.google.com/drive/folders/1dkC4NsxMrd6Rxm1IogKe71U8bYy76ojV?usp=sharing)
 [![Challenge](https://img.shields.io/badge/Competition-Codalab-purple.svg)](https://codalab.lisn.upsaclay.fr/competitions/17638) 
