@@ -71,7 +71,7 @@ class Trainer:
             #    new_state_dict[name] = v
             
             msg=self.model.load_state_dict(state_dict, strict=False)
-            print(msg)
+            print('load from LSVQ',msg)
 
 
         if self.config["ema"]:
@@ -135,21 +135,31 @@ class Trainer:
                 if key in data:
                    data[key] = data[key].to(self.device)
             y = data["label"].float().detach().to(self.device).unsqueeze(-1)
-            y_pred = self.model(inputs=data, reduce_scores=False)
-            
-            loss=0
+            if self.config['model']['type'] == 'KSVQE':
+                 y_pred,dis_contra_loss = self.model(inputs=data, reduce_scores=False)
+                 print('dis_contra_loss',dis_contra_loss)   
+                 if dis_contra_loss.size(0)>1:
+                    dis_contra_loss = dis_contra_loss.mean()
+                 #
+                 loss = 0.3*dis_contra_loss
+            else:
+                 y_pred = self.model(inputs=data, reduce_scores=False)
+                 loss=0
             for y_pred_idx in range(len(y_pred)):
                 p_loss = self.plcc_loss(y_pred[y_pred_idx], y)
+                print('p_loss',p_loss.shape)
+                print('p_loss',p_loss)
                 r_loss = self.rank_loss(y_pred[y_pred_idx], y)
-                loss += p_loss +0.3 * r_loss
+                loss += p_loss 
                 print(
                         "train",list(data.keys())[y_pred_idx],
                         "train/plcc_loss", p_loss.item(),
-                        "train/srcc_loss", r_loss.item(),     
+                       
                 )
             print("train/total_loss",loss.item())
-
+            print('stop')
             loss.backward()
+            print('stop')
             self.optimizer.step()
             self.scheduler.step()
 
@@ -190,10 +200,15 @@ class Trainer:
                         )
                     )
             with torch.no_grad():
-                result["pred"] = model(inputs=data,reduce_scores=True).cpu().numpy()
+                if self.config['model']['type'] == 'KSVQE':
+                   result["pred"],_ = model(inputs=data,reduce_scores=True)
+                   result["pred"] =  result["pred"].cpu().numpy()
+                else:
+                   result["pred"] = model(inputs=data,reduce_scores=True).cpu().numpy()
             result["label"] = data["label"].item()
             del data
             results.append(result)
+            
 
         labels = [r["label"] for r in results]
         preds = [np.mean(r["pred"][:]) for r in results]
@@ -233,7 +248,54 @@ class Trainer:
     
     
 
-    def inferece(self):
+    def inferece_val(self):
+
+        output_results=[]
+        labels = []
+ 
+        for i, data in enumerate(tqdm(self.val_loader, desc="Validating")):
+            result={}
+            self.model.eval()
+            for key in self.key_list:
+                if key in data:
+                    data[key] = data[key].to(self.device)
+                    b, c, t, h, w = data[key].shape
+                    data[key] = (
+                        data[key]
+                        .reshape(
+                            b, c, data["num_clips"][key], t // data["num_clips"][key], h, w
+                        )
+                        .permute(0, 2, 1, 3, 4, 5)
+                        .reshape(
+                            b * data["num_clips"][key], c, t // data["num_clips"][key], h, w
+                        )
+                    )
+            with torch.no_grad():
+                
+                #pred = self.model(inputs=data,reduce_scores=True).cpu().numpy()
+                if self.config['model']['type'] == 'KSVQE':
+                   pred,_ = self.model(inputs=data,reduce_scores=True)
+                   pred =  pred.cpu().numpy()
+                else:
+                   pred = self.model(inputs=data,reduce_scores=True).cpu().numpy()
+            
+            output_results.append(pred.mean(0).item())
+            labels.append(data["label"].item())
+
+        labels = labels
+        preds =output_results
+        preds = self.rescale(preds, labels)
+
+        s = spearmanr(labels, preds)[0]
+        p = pearsonr(labels, preds)[0]
+        k = kendallr(labels, preds)[0]
+        r = np.sqrt(((labels - preds) ** 2).mean())
+
+        print('SRCC{}PLCC{}KRCC{}RMSE{}'.format(s,p,k,r))
+        
+        
+
+    def inferece_test(self):
 
         output_results=[]
         
@@ -256,7 +318,13 @@ class Trainer:
                         )
                     )
             with torch.no_grad():
-                pred = self.model(inputs=data,reduce_scores=True).cpu().numpy()
+                
+                #pred = self.model(inputs=data,reduce_scores=True).cpu().numpy()
+                if self.config['model']['type'] == 'KSVQE':
+                   pred,_ = self.model(inputs=data,reduce_scores=True)
+                   pred =  pred.cpu().numpy()
+                else:
+                   pred = self.model(inputs=data,reduce_scores=True).cpu().numpy()
             
             output_results.append((data["video_name"][0],pred.mean(0).item()))
         
