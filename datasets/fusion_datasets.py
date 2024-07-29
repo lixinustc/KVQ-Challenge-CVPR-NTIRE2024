@@ -842,3 +842,129 @@ class ViewDecompositionDataset_add_forSimpleVQA(torch.utils.data.Dataset):
         return len(self.video_infos)
 
 
+class ViewDecompositionDataset_KVQ(torch.utils.data.Dataset):
+    def __init__(self, opt,namelist=None):
+        ## opt is a dictionary that includes options for video sampling
+
+        super().__init__()
+
+        self.weight = opt.get("weight", 0.5)
+        
+        self.video_infos = []
+        self.ann_file = opt["anno_file"]
+        self.data_prefix = opt["data_prefix"]
+        self.namelist = namelist
+        self.opt = opt
+        self.sample_types = opt["sample_types"]
+        self.data_backend = opt.get("data_backend", "disk")
+        self.augment = opt.get("augment", False)
+        if self.data_backend == "petrel":
+            from petrel_client import client
+
+            self.client = client.Client(enable_mc=True)
+
+        self.phase = opt["phase"]
+        self.crop = opt.get("random_crop", False)
+        self.mean = torch.FloatTensor([123.675, 116.28, 103.53])
+        self.std = torch.FloatTensor([58.395, 57.12, 57.375])
+        
+        self.clip_mean = torch.FloatTensor([0.48145466, 0.4578275, 0.40821073])
+        self.clip_std = torch.FloatTensor([0.26862954, 0.26130258, 0.27577711])
+        self.samplers = {}
+        for stype, sopt in opt["sample_types"].items():
+            if "t_frag" not in sopt:
+                # resized temporal sampling for TQE in DOVER
+                self.samplers[stype] = UnifiedFrameSampler(
+                    sopt["clip_len"], sopt["num_clips"], sopt["frame_interval"]
+                )
+            else:
+                # temporal sampling for AQE in DOVER
+                self.samplers[stype] = UnifiedFrameSampler(
+                    sopt["clip_len"] // sopt["t_frag"],
+                    sopt["t_frag"],
+                    sopt["frame_interval"],
+                    sopt["num_clips"],
+                )
+            print(
+                stype + " branch sampled frames:",
+                self.samplers[stype](40, self.phase == "train"),
+            )
+
+        if isinstance(self.ann_file, list):
+            self.video_infos = self.ann_file
+            # print(1)
+        else:
+                score_list=[]
+                with open(self.ann_file, "r") as fin:
+                    for line in fin:
+                        line_split = line.strip().split(",")
+                        filename, cls_label, dis_label, label = line_split
+                        label = float(label)
+                        dis_label =int(float(dis_label))
+                        cls_label =int(float(cls_label))
+                        filename1 = osp.join(self.data_prefix, filename)
+                        # print(2)
+                        score_list.append(label)
+                        self.video_infos.append(dict(filename=filename1, label=label,cls_label=cls_label,dis_label=dis_label,video_name=filename))
+                self.max=max(score_list)
+                self.min=min(score_list)
+             
+
+    def __getitem__(self, index):
+        video_info = self.video_infos[index]
+        filename = video_info["filename"]
+        label = video_info["label"]
+        dis_label = video_info["dis_label"]
+        video_name = video_info["video_name"]
+        #std = video_info["std"]
+
+        #try:
+            ## Read Original Frames
+            ## Process Frames
+        ori_data, resize_data, data,ori_s_data,frame_inds = spatial_temporal_view_decomposition_forKSVQE(
+            filename,
+            self.sample_types,
+            self.samplers,
+            self.phase == "train",
+            self.augment and (self.phase == "train"),
+        )
+
+        for k, v in data.items():
+            data[k] = ((v.permute(1, 2, 3, 0) - self.mean) / self.std).permute(
+                3, 0, 1, 2
+            )
+            #print(resize_data[k].max())
+            resize_data[k] = ((resize_data[k].permute(1, 2, 3, 0)/255.0 - self.clip_mean) / self.clip_std).permute(
+                3, 0, 1, 2
+            )
+      
+        data["resize_video"]   = resize_data[k]
+        data["fragment"]   = data[k]
+        data["ori_fragment"]   = ori_s_data[k]
+        
+
+        data["num_clips"] = {}
+        for stype, sopt in self.sample_types.items():
+            data["num_clips"][stype] = sopt["num_clips"]
+        
+        data["clip_len"] = {}
+        for stype, sopt in self.sample_types.items():
+            data["clip_len"][stype] = sopt["clip_len"]
+            
+        data["frame_inds"] = frame_inds
+        #data["gt_label"] = label
+        data["dis_label"] = dis_label
+       
+        data["name"] = filename  # osp.basename(video_info["filename"])
+        data["video_name"] = video_name 
+        data["original_shape"] = ori_data[k].shape[1:]
+        data["label"] = label
+     
+        return data
+
+    def __len__(self):
+        return len(self.video_infos)
+    
+    
+
+
