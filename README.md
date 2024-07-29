@@ -65,7 +65,31 @@ or
 ```bash
 bash scripts/test.sh
 ```
+### Run KSVQE
+### Train with DDP
+```bash
+CUDA_VISIBLE_DEVICES=0,1,2,3 nohup python -m torch.distributed.launch --nproc_per_node=4 --master_port 3332 --use_env train_ddp.py --o config/Kwai_KSVQE.yml  --gpu_id 0,1,2,3 -r checkpoint_ddp/ > log/Kwai_KSVQE_ddp_loadpretrained.log 2>&1 &
+```
+```bash
+bash scripts/train_KSVQE_ddp.sh
+```
+### Train  with DP
+```bash
+nohup python -u train.py  --o config/Kwai_KSVQE.yml -r checkpoint_dp/ --gpu_id 0,1 > log/Kwai_KSVQE.log 2>&1 &
 
+
+
+or 
+```bash
+bash scripts/train_KSVQE.sh
+```
+### Test
+```bash
+python /data2/luyt/KSVQE/test.py --o config/Kwai_KSVQE_test.yml --gpu_id 7```
+or 
+```bash
+bash scripts/test_KSVQE.sh
+```
 ## Cite US
 Please cite us if this work is helpful to you.
 ```
