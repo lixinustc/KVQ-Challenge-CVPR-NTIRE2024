@@ -360,6 +360,91 @@ def get_single_view(
         raise NotImplementedError
     return video
 
+def spatial_temporal_view_decomposition_forKSVQE(
+    video_path, sample_types, samplers, is_train=False, augment=False,
+):
+    video = {}
+    if video_path.endswith(".yuv"):
+        print("This part will be deprecated due to large memory cost.")
+        ## This is only an adaptation to LIVE-Qualcomm
+        ovideo = skvideo.io.vread(
+            video_path, 1080, 1920, inputdict={"-pix_fmt": "yuvj420p"}
+        )
+        for stype in samplers:
+            frame_inds = samplers[stype](ovideo.shape[0], is_train)
+            imgs = [torch.from_numpy(ovideo[idx]) for idx in frame_inds]
+            video[stype] = torch.stack(imgs, 0).permute(3, 0, 1, 2)
+        del ovideo
+    else:
+        try:
+            #print('decord processing...')
+            vreader = VideoReader(video_path)
+            ### Avoid duplicated video decoding!!! Important!!!!
+            all_frame_inds = []
+            frame_inds = {}
+            for stype in samplers:
+                frame_inds[stype] = samplers[stype](len(vreader), is_train)
+                all_frame_inds.append(frame_inds[stype])
+
+            ### Each frame is only decoded one time!!!
+            all_frame_inds = np.concatenate(all_frame_inds, 0)
+            frame_dict = {idx: vreader[idx] for idx in np.unique(all_frame_inds)}
+
+            for stype in samplers:
+                imgs = [frame_dict[idx] for idx in frame_inds[stype]]
+                video[stype] = torch.stack(imgs, 0).permute(3, 0, 1, 2)
+            #print('decord processing...')
+        except:
+            video_capture=cv2.VideoCapture()
+            video_capture.open(video_path)
+            cap=cv2.VideoCapture(video_path)
+            frame_num=int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+            video_frame_array=[]
+            frame_last=None
+            while True:
+                ret, frame = cap.read()
+                if not ret:
+                    #print("视频播放完毕")
+                    break
+                frame_last=frame
+                video_frame_array.append(frame)
+            if frame_last is None:
+                print(video_path)
+            while len(video_frame_array)<=130:
+                print('too short:',video_path)
+                video_frame_array.append(frame_last)
+            video_frame_array=np.stack(video_frame_array, axis=0, out=None)
+
+            all_frame_inds = []
+            frame_inds = {}
+            #assert(len(video_frame_array)==frame_num)
+            for stype in samplers:
+                frame_inds[stype] = samplers[stype](len(video_frame_array), is_train)
+                all_frame_inds.append(frame_inds[stype])
+            
+            #all_frame_inds = np.concatenate(all_frame_inds, 0)
+            #print('vis',video_frame_array[0,...])
+            frame_dict = {idx: video_frame_array[idx,...] for idx in np.unique(all_frame_inds)}
+            for stype in samplers:
+                #print('for validate',frame_dict[frame_inds[stype][0]])
+                imgs = [torch.tensor(frame_dict[idx]) for idx in frame_inds[stype]]
+                video[stype] = torch.stack(imgs, 0).permute(3, 0, 1, 2)
+    sampled_video = {}
+    resize_video={}
+    ori_sampled_video={}
+    crop_sample_video={}
+    for stype, sopt in sample_types.items():
+        if is_train==True:
+            sopt['phase'] = 'train'
+        else:
+            sopt['phase'] = 'test'
+        sampled_video[stype] = get_single_view(video[stype], stype, **sopt)
+        resize_video[stype] = get_resized_video(video[stype], **sopt)
+        #print(sopt)
+        ori_sampled_video[stype] =  get_spatial_fragments(video[stype], **sopt)
+        #crop_sample_video[stype]= get_spatial_cropped_fragments(video[stype]) 
+    return video,resize_video,sampled_video, ori_sampled_video,frame_inds
+
 
 def spatial_temporal_view_decomposition(
     video_path, sample_types, samplers, phase='train', is_train=False, augment=False,
