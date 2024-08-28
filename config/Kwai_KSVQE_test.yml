@@ -17,7 +17,7 @@ data:
         type: ViewDecompositionDataset_KVQ
         args:
             phase: test
-            anno_file: /data2/luyt/KSVQE/kwai_competition/val_split_v4_revise66_compete.txt
+            anno_file: /data2/luyt/KSVQE/kwai_competition/test_split_v4_revise66_compete.txt
             data_prefix: /data2/luyt/KSVQE/kwai_competition/kwai_competition/
             sample_types:
                 #resize:
