@@ -1,0 +1,76 @@
+name: DOVER
+num_epochs: 50
+l_num_epochs: 0
+warmup_epochs: 2.5
+ema: true
+save_model: true
+batch_size: 4 #16
+num_workers: 6
+split_seed: 42
+ddp: True
+wandb:
+    project_name: DOVER
+
+data:  
+   
+    val:
+        type: ViewDecompositionDataset_KVQ
+        args:
+            phase: test
+            anno_file: /data2/luyt/KSVQE/kwai_competition/val_split_v4_revise66_compete.txt
+            data_prefix: /data2/luyt/KSVQE/kwai_competition/kwai_competition/
+            sample_types:
+                #resize:
+                #    size_h: 224
+                #    size_w: 224
+                technical:
+                    fragments_h: 9
+                    fragments_w: 9
+                    fsize_h: 32
+                    fsize_w: 32
+                    size_h: 112
+                    size_w: 112
+                    aligned: 8
+                    clip_len: 32
+                    frame_interval: 4
+                    num_clips: 3
+    
+
+ 
+
+model:
+    type: KSVQE
+    args:
+        KSVQE:
+            backbone:
+                    checkpoint: true
+                    pretrained:
+                    num_samples: 1
+                    sample_type: topkpertubation
+                    CLIP_location: 8
+                    cls_use: True
+                    tuning_stage: 2
+                    qls_swin: True
+                    frozen3D: False
+                    frozen_stages: -1
+            
+            backbone_preserve_keys: technical
+            divide_head: true
+            head:
+                    in_channels: 768
+                    hidden_channels: 64
+
+    
+            
+optimizer:
+    lr: !!float 3e-5
+    backbone_lr_mult: !!float 1
+    wd: 0.05
+        
+#test_load_path: ./pretrained_weights/DOVER.pth
+load_path:  your_checkpoint
+test_load_path: your_checkpoint
+#mnt/workspace/workgroup/ustc/dover/new_ali_comfinal/dover_K_3Dswin_CLIP_cls_adapter_tuningstage_nr_semantic_dist_sd_1213_region9_a1_a20_tune2_pretrain_distsuper_d0.3/DOVER_head_Konvid_0_val-ltest_n_finetuned_s0.8819578412824505_p0.8874527027267414.pth
+
+#test_load_path:
+# /mnt/workspace/workgroup/ustc/dover/new_ali_comfinal/dover_K_3Dswin_CLIP_cls_adapter_tuningstage_nr_semantic_dist_sd_1213_region9_a1_a20_tune2_pretrain_distsuper_d0.3/DOVER_head_Konvid_0_val-ltest_n_finetuned_s0.8819578412824505_p0.8874527027267414.pth
