@@ -70,7 +70,3 @@ optimizer:
 #test_load_path: ./pretrained_weights/DOVER.pth
 load_path:  your_checkpoint
 test_load_path: your_checkpoint
-#mnt/workspace/workgroup/ustc/dover/new_ali_comfinal/dover_K_3Dswin_CLIP_cls_adapter_tuningstage_nr_semantic_dist_sd_1213_region9_a1_a20_tune2_pretrain_distsuper_d0.3/DOVER_head_Konvid_0_val-ltest_n_finetuned_s0.8819578412824505_p0.8874527027267414.pth
-
-#test_load_path:
-# /mnt/workspace/workgroup/ustc/dover/new_ali_comfinal/dover_K_3Dswin_CLIP_cls_adapter_tuningstage_nr_semantic_dist_sd_1213_region9_a1_a20_tune2_pretrain_distsuper_d0.3/DOVER_head_Konvid_0_val-ltest_n_finetuned_s0.8819578412824505_p0.8874527027267414.pth
