@@ -74,15 +74,11 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 nohup python -m torch.distributed.launch --nproc_pe
 bash scripts/train_KSVQE_ddp.sh
 ```
 ### Train  with DP
-```bash
 nohup python -u train.py  --o config/Kwai_KSVQE.yml -r checkpoint_dp/ --gpu_id 0,1 > log/Kwai_KSVQE.log 2>&1 &
 
-
-
 or 
-```bash
 bash scripts/train_KSVQE.sh
-```
+
 ### Test
 ```bash
 python /data2/luyt/KSVQE/test.py --o config/Kwai_KSVQE_test.yml --gpu_id 7```
@@ -90,6 +86,9 @@ or
 ```bash
 bash scripts/test_KSVQE.sh
 ```
+###Pretrain Weight
+Please download the pertrained weight of 3D swin transformer backbone on LSVQ in this link: https://drive.google.com/file/d/1HcbqCRRnVLnh738VHkpz7UMNuM3v59QU/view?usp=drive_link
+
 ## Cite US
 Please cite us if this work is helpful to you.
 ```
