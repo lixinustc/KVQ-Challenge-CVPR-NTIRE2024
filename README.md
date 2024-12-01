@@ -86,7 +86,7 @@ or
 ```bash
 bash scripts/test_KSVQE.sh
 ```
-###Pretrain Weight
+### Pretrain Weight
 Please download the pertrained weight of 3D swin transformer backbone on LSVQ in this link: https://drive.google.com/file/d/1HcbqCRRnVLnh738VHkpz7UMNuM3v59QU/view?usp=drive_link
 
 ## Cite US
